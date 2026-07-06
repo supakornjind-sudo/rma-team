@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RMA ออฟฟิศตารางงานทีม</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<!-- ===== LOGIN (Google Sign-In) ===== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div style="font-size:44px;">🏢</div>
+    <h2>RMA ตารางงานทีม</h2>
+    <p>ล็อกอินด้วยบัญชี Google ของบริษัทเพื่อเข้าใช้งาน<br>ระบบจะบันทึกชื่อผู้ทำรายการทุกครั้ง</p>
+    <div class="g-signin" id="gSignIn"></div>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ===== LOADING ===== -->
+<div id="loadingOverlay"><div class="spinner"></div><span>กำลังโหลด...</span></div>
+
+<!-- ===== HEADER ===== -->
+<header id="mainHeader" style="display:none;">
+  <h1 id="appTitle">🏢 RMA ตารางงานทีม</h1>
+  <button class="nav-btn active" data-view="office" onclick="showView('office')">🚶 ออฟฟิศ</button>
+  <button class="nav-btn" data-view="dashboard" onclick="showView('dashboard')">📊 Dashboard</button>
+  <button class="nav-btn" data-view="review" onclick="showView('review')">🔍 ตรวจงานตามแบรนด์</button>
+  <button class="nav-btn" data-view="projects" onclick="showView('projects')">🏗️ โปรเจกต์รวมทีม</button>
+  <select id="personJump" onchange="if(this.value)openPerson(this.value)" style="border-radius:20px;">
+    <option value="">📋 ตารางงานรายคน...</option>
+  </select>
+  <button class="nav-btn" id="adminBtn" style="display:none;" onclick="openAdmin()">⚙️ จัดการระบบ</button>
+  <div class="user-chip" id="userChip"></div>
+</header>
+
+<!-- ===== OFFICE ===== -->
+<div class="view active" id="view-office">
+  <div class="office" id="officeScene">
+    <div class="wallline"></div><div class="clock">🕐</div>
+    <div class="banner">เช็คลิสการทำงาน ✨</div>
+    <div class="window" style="left:6%;"></div><div class="window" style="right:6%;"></div>
+    <div class="plant" style="left:2%; top:46%;">🪴</div><div class="plant" style="right:2%; top:46%;">🌵</div>
+    <div class="desk" style="left:14%; top:44%;"><div class="monitor"></div><div class="table"></div></div>
+    <div class="desk" style="left:44%; top:44%;"><div class="monitor"></div><div class="table"></div></div>
+    <div class="desk" style="left:74%; top:44%;"><div class="monitor"></div><div class="table"></div></div>
+  </div>
+  <p class="office-hint">💡 คลิกตัวการ์ตูนเพื่อเปิดตารางงานของแต่ละคน — ตัวเลขแดงคืองานค้าง/เลยกำหนด</p>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="view" id="view-dashboard">
+  <div class="stats" id="dashStats"></div>
+  <div class="dash-grid">
+    <div class="card"><strong style="color:#1e3a5f;">📅 จำนวนงานรายเดือน</strong><div id="dashByMonth" style="margin-top:12px;"></div></div>
+    <div class="card"><strong style="color:#1e3a5f;">🏷️ จำนวนงานแยกตามแบรนด์</strong><div id="dashByBrand" style="margin-top:12px;"></div></div>
+    <div class="card"><strong style="color:#1e3a5f;">📌 จำนวนงานแยกตามสถานะ</strong><div id="dashByStatus" style="margin-top:12px;"></div></div>
+    <div class="card"><strong style="color:#1e3a5f;">⏰ งานใกล้ถึงกำหนด / เลยกำหนด</strong><div id="dashDue" style="margin-top:12px;"></div></div>
+  </div>
+</div>
+
+<!-- ===== REVIEW (ตรวจงานตามแบรนด์ + ค้นหาขั้นสูง) ===== -->
+<div class="view" id="view-review">
+  <div class="card">
+    <div class="toolbar">
+      <strong style="color:#1e3a5f;">🔍 ตรวจงานตามแบรนด์</strong>
+      <div class="mode-tog" id="reviewMode"></div>
+      <button class="btn blue small" style="margin-left:auto;" onclick="exportCSV()">⬇️ Export CSV</button>
+    </div>
+    <div class="chips" id="reviewChips" style="margin-bottom:10px;"></div>
+    <div class="filter-bar">
+      <input type="search" id="fSearch" placeholder="🔎 ค้นหาหัวข้อ / รายละเอียด / หมายเหตุ...">
+      <select id="fPerson"><option value="">ผู้รับผิดชอบ: ทุกคน</option></select>
+      <select id="fMonth"><option value="">เดือน: ทั้งหมด</option></select>
+      <select id="fStatus"><option value="">สถานะ: ทั้งหมด</option></select>
+      <select id="fChannel"><option value="">ช่องทาง: ทั้งหมด</option></select>
+      <select id="fType"><option value="">ประเภทงาน: ทั้งหมด</option></select>
+      <select id="fSection"><option value="">Section: ทั้งหมด</option><option value="past">ผลงานที่ลงแล้ว</option><option value="plan">แผนงานเดือน</option></select>
+    </div>
+  </div>
+  <div class="stats" id="reviewStats"></div>
+  <div id="reviewGroups"></div>
+</div>
+
+<!-- ===== PROJECTS ===== -->
+<div class="view" id="view-projects">
+  <div class="card">
+    <div class="toolbar">
+      <strong style="color:#1e3a5f;">🏗️ โปรเจกต์รวมทีม / เช็คลิสต์</strong>
+      <button class="btn small" style="margin-left:auto;" onclick="addProjGroup()">➕ เพิ่มหมวด/อีเวนต์</button>
+    </div>
+    <div class="chips" id="projChips"></div>
+  </div>
+  <div id="projGroups"></div>
+</div>
+
+<!-- ===== PERSON ===== -->
+<div class="view" id="view-person">
+  <div class="person-head">
+    <div class="avatar" id="pAvatar"></div>
+    <div><h2 id="pName"></h2><span style="color:#7a8aa0;font-size:13px;" id="pSub"></span></div>
+  </div>
+  <div class="card" id="personChipsCard"><div class="chips" id="personChips"></div></div>
+  <div class="stats" id="pStats"></div>
+  <div id="personSections"></div>
+</div>
+
+<!-- ===== CONTENT TASK MODAL ===== -->
+<div class="modal-bg" id="cModal"><div class="modal">
+  <h3 id="cTitle">➕ เพิ่มงาน</h3>
+  <div class="form-grid">
+    <div><label>Section</label>
+      <select id="cSection" onchange="cSecFields()">
+        <option value="past">1. ผลงานที่ลงไปแล้ว (รายสัปดาห์)</option>
+        <option value="plan">2. แผนงานประจำเดือน</option>
+      </select></div>
+    <div><label>ผู้รับผิดชอบ</label><select id="cMember"></select></div>
+    <div class="f-past"><label>วันที่โพส</label><input type="date" id="cDate"></div>
+    <div class="f-plan" style="display:none;"><label>ประจำเดือน</label><input type="month" id="cMonth"></div>
+    <div class="f-plan" style="display:none;"><label>ลำดับแผน</label><input type="number" id="cOrder" min="0"></div>
+    <div class="f-plan" style="display:none;"><label>สถานะขั้นตอน</label><div class="dd-manage"><select id="cPlanSt" onchange="planStChanged()"></select><button class="dd-add" onclick="addDropdown('planStatus','cPlanSt')">+ เพิ่ม</button></div></div>
+    <div class="f-plan" style="display:none;"><label>กำหนดออนแอร์</label><input type="text" id="cDue" placeholder="เช่น 14/7/2026"></div>
+    <div class="f-plan f-postdate" style="display:none;"><label>📅 วันที่โพสต์จริง (เมื่อเสร็จสิ้น จะย้ายไปตารางสัปดาห์ให้อัตโนมัติ)</label><input type="date" id="cPostDate"></div>
+    <div><label>ประเภทเนื้อหา</label><div class="dd-manage"><select id="cType"></select><button class="dd-add" onclick="addDropdown('contentType','cType')">+ เพิ่ม</button></div></div>
+    <div><label>ฝ่าย</label><div class="dd-manage"><select id="cDept"></select><button class="dd-add" onclick="addDropdown('dept','cDept')">+ เพิ่ม</button></div></div>
+    <div class="full"><label>หัวข้อคอนเทนต์ / รายละเอียด</label><input type="text" id="cTopic"></div>
+    <div><label>แบรนด์</label><div class="dd-manage"><select id="cBrand"></select><button class="dd-add" onclick="addBrandQuick()">+ เพิ่ม</button></div></div>
+    <div><label>จำนวนเพจ</label><input type="text" id="cPages"></div>
+    <div class="f-past"><label>ผล KPI (≥10)</label><select id="cKpi"><option>รอผล</option><option>ผ่าน</option><option>ไม่ผ่าน</option></select></div>
+    <div class="full"><label>หมายเหตุ</label><input type="text" id="cNote"></div>
+    <div class="full f-past"><label>🔗 ลิงก์หลายช่องทาง (Facebook / TikTok / YouTube / ...) พร้อมยอด Like·Share ของแต่ละลิงก์</label>
+      <div class="link-rows" id="linkRows"></div>
+      <button class="dd-add" style="margin-top:6px;" onclick="addLinkRow()">+ เพิ่มลิงก์</button></div>
+    <div class="full"><label>🖼️ รูปงาน / หลักฐาน (เก็บบน Google Drive — แนบได้หลายรูป)</label>
+      <div class="paste-zone" id="pasteZone">📸 แปะรูป (Ctrl+V) / คลิกเลือกไฟล์ / ลากมาวาง</div>
+      <input type="file" id="imgInput" accept="image/*" multiple hidden>
+      <div class="thumbs" id="cThumbs"></div></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn gray" onclick="closeM('cModal')">ยกเลิก</button>
+    <button class="btn" onclick="saveC()">💾 บันทึก</button>
+  </div>
+</div></div>
+
+<!-- ===== PRODUCTION MODAL ===== -->
+<div class="modal-bg" id="pModal"><div class="modal">
+  <h3 id="pTitle">➕ เพิ่มงานผลิต/ซ่อมบำรุง</h3>
+  <div class="form-grid">
+    <div><label>ผู้รับผิดชอบ</label><select id="pMember"></select></div>
+    <div><label>วันที่รับงาน</label><input type="date" id="pRecv"></div>
+    <div><label>ความด่วน</label><div class="dd-manage"><select id="pUrg"></select><button class="dd-add" onclick="addDropdown('urgency','pUrg')">+ เพิ่ม</button></div></div>
+    <div><label>จากสาขา/โชว์รูม</label><div class="dd-manage"><select id="pBranch"></select><button class="dd-add" onclick="addDropdown('branch','pBranch')">+ เพิ่ม</button></div></div>
+    <div class="full"><label>รายการงาน / ปัญหา</label><input type="text" id="pDetail"></div>
+    <div class="full"><label>ผู้ส่งงานต่อ (ดีไซเนอร์/ร้าน)</label><input type="text" id="pFwd"></div>
+    <div><label>วันที่ส่งแบบ/ส่งซ่อม</label><input type="text" id="pSend"></div>
+    <div><label>วันที่เสร็จ/รับของ</label><input type="text" id="pDone"></div>
+    <div class="full"><label>สถานะขั้นตอน</label><div class="dd-manage"><select id="pSt"></select><button class="dd-add" onclick="addDropdown('prodStatus','pSt')">+ เพิ่ม</button></div></div>
+    <div class="full"><label>หมายเหตุ</label><input type="text" id="pNote"></div>
+    <div class="full"><label>🖼️ รูปงาน (Google Drive)</label>
+      <div class="paste-zone" id="pasteZoneP">📸 แปะรูป (Ctrl+V) / คลิกเลือกไฟล์</div>
+      <input type="file" id="imgInputP" accept="image/*" multiple hidden>
+      <div class="thumbs" id="pThumbs"></div></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn gray" onclick="closeM('pModal')">ยกเลิก</button>
+    <button class="btn" onclick="saveP()">💾 บันทึก</button>
+  </div>
+</div></div>
+
+<!-- ===== PROJECT ITEM MODAL ===== -->
+<div class="modal-bg" id="jModal"><div class="modal">
+  <h3 id="jTitle">➕ เพิ่มรายการเช็คลิสต์</h3>
+  <div class="form-grid">
+    <div class="full"><label>สถานะงาน</label><div class="dd-manage"><select id="jSt"></select><button class="dd-add" onclick="addDropdown('projStatus','jSt')">+ เพิ่ม</button></div></div>
+    <div class="full"><label>ขั้นตอน / รายละเอียดงาน</label><input type="text" id="jDetail"></div>
+    <div><label>จำนวน</label><input type="text" id="jQty"></div>
+    <div><label>พื้นที่ / สาขา</label><div class="dd-manage"><select id="jArea"></select><button class="dd-add" onclick="addDropdown('branch','jArea')">+ เพิ่ม</button></div></div>
+    <div><label>Brand</label><div class="dd-manage"><select id="jBrand"></select><button class="dd-add" onclick="addBrandQuick('jBrand')">+ เพิ่ม</button></div></div>
+    <div><label>ผู้รับผิดชอบ</label><input type="text" id="jOwner"></div>
+    <div><label>กำหนดเสร็จ/โพส</label><input type="text" id="jDue" placeholder="เช่น 10/7/2026"></div>
+    <div><label>ขนาด</label><input type="text" id="jSize"></div>
+    <div class="full"><label>หมายเหตุ / ลิงก์งาน</label><input type="text" id="jNote"></div>
+    <div class="full"><label>🖼️ รูปงาน (Google Drive)</label>
+      <div class="paste-zone" id="pasteZoneJ">📸 แปะรูป (Ctrl+V) / คลิกเลือกไฟล์</div>
+      <input type="file" id="imgInputJ" accept="image/*" multiple hidden>
+      <div class="thumbs" id="jThumbs"></div></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn gray" onclick="closeM('jModal')">ยกเลิก</button>
+    <button class="btn" onclick="saveJ()">💾 บันทึก</button>
+  </div>
+</div></div>
+
+<!-- ===== ADMIN MODAL ===== -->
+<div class="modal-bg" id="aModal"><div class="modal" style="max-width:640px;">
+  <h3>⚙️ จัดการระบบ (Admin)</h3>
+  <div class="toolbar">
+    <button class="btn small blue" onclick="adminTab('brands')">🏷️ แบรนด์</button>
+    <button class="btn small blue" onclick="adminTab('dropdowns')">📋 Dropdown</button>
+    <button class="btn small blue" onclick="adminTab('members')">👥 สมาชิกทีม</button>
+    <button class="btn small blue" onclick="adminTab('users')">🔐 สิทธิ์ผู้ใช้</button>
+  </div>
+  <div id="adminBody"></div>
+  <div class="modal-actions"><button class="btn gray" onclick="closeM('aModal')">ปิด</button></div>
+</div></div>
+
+<!-- ===== EXPORT MODAL ===== -->
+<div class="modal-bg" id="xModal"><div class="modal" style="max-width:420px;">
+  <h3>⬇️ Export CSV</h3>
+  <div class="form-grid">
+    <div><label>เดือน</label><select id="xMonth"><option value="">ทั้งหมด</option></select></div>
+    <div><label>แบรนด์</label><select id="xBrand"><option value="">ทั้งหมด</option></select></div>
+    <div class="full"><label>สถานะ (KPI/แผน)</label><select id="xStatus"><option value="">ทั้งหมด</option></select></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn gray" onclick="closeM('xModal')">ยกเลิก</button>
+    <button class="btn" onclick="doExport()">⬇️ ดาวน์โหลด CSV</button>
+  </div>
+</div></div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lightboxImg"></div>
+
+<script src="config.js"></script>
+<script src="utils.js"></script>
+<script src="api.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
