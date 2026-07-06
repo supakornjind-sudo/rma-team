@@ -11,7 +11,7 @@ const CONFIG = {
   // ใช้คู่กับ ALLOW_INSECURE = true ในไฟล์ Config.gs ฝั่ง Apps Script
   // เมื่อทำระบบ Login เสร็จ (README ขั้นตอนที่ 5) ให้เปลี่ยนเป็น false
   // และเปลี่ยน ALLOW_INSECURE ใน Config.gs เป็น false ด้วย
-  TEST_MODE: false,
+  TEST_MODE: true,
 
   // Google OAuth Client ID (ได้จาก Google Cloud Console — ใช้ทำระบบ Login)
   GOOGLE_CLIENT_ID: 'PASTE_YOUR_GOOGLE_CLIENT_ID_HERE',
