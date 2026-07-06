@@ -1,31 +1,20 @@
 /* ============================================================
-   style.css — ดีไซน์เดิมของเว็บ (ห้ามเปลี่ยน Layout หลัก)
-   + ส่วนเพิ่ม: login, dashboard, filter bar, toast, due badge
+   style.css — ดีไซน์เดิมของเว็บ (Layout หลักคงเดิมทั้งหมด)
    ============================================================ */
 
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, sans-serif; }
 body { background:#eef2f7; min-height:100vh; }
 
-/* ===== HEADER / NAV (ดีไซน์เดิม) ===== */
+/* ===== HEADER / NAV ===== */
 header { background:#1e3a5f; color:#fff; padding:12px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; position:sticky; top:0; z-index:50; box-shadow:0 2px 8px rgba(0,0,0,.2); }
 header h1 { font-size:17px; margin-right:6px; }
 .nav-btn { background:rgba(255,255,255,.12); color:#fff; border:none; padding:8px 15px; border-radius:20px; cursor:pointer; font-size:13px; transition:.2s; }
 .nav-btn:hover { background:rgba(255,255,255,.28); }
 .nav-btn.active { background:#4caf7d; }
-.user-chip { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.12); padding:5px 12px 5px 6px; border-radius:20px; font-size:12px; margin-left:auto; }
-.user-chip img { width:26px; height:26px; border-radius:50%; }
-.user-chip .role { background:#4caf7d; padding:1px 8px; border-radius:10px; font-size:10px; }
-.user-chip .role.admin { background:#e67e22; }
+.who-box { display:flex; align-items:center; gap:6px; margin-left:auto; font-size:12px; background:rgba(255,255,255,.12); padding:5px 10px; border-radius:20px; }
+.who-box select { border-radius:14px; padding:4px 8px; font-size:12px; border:none; }
 .view { display:none; padding:20px; max-width:1320px; margin:0 auto; }
 .view.active { display:block; }
-
-/* ===== LOGIN ===== */
-#loginScreen { position:fixed; inset:0; background:linear-gradient(135deg,#1e3a5f,#2c5d9e); z-index:300; display:flex; align-items:center; justify-content:center; }
-.login-box { background:#fff; border-radius:16px; padding:40px; text-align:center; max-width:380px; width:92%; box-shadow:0 10px 40px rgba(0,0,0,.3); }
-.login-box h2 { color:#1e3a5f; margin-bottom:8px; }
-.login-box p { color:#7a8aa0; font-size:13px; margin-bottom:22px; }
-.login-box .g-signin { display:flex; justify-content:center; }
-.login-err { color:#c0392b; font-size:12px; margin-top:14px; }
 
 /* ===== LOADING / TOAST ===== */
 #loadingOverlay { display:none; position:fixed; inset:0; background:rgba(20,30,45,.45); z-index:250; align-items:center; justify-content:center; flex-direction:column; gap:14px; color:#fff; font-size:14px; }
@@ -36,52 +25,115 @@ header h1 { font-size:17px; margin-right:6px; }
 #toast.t-success { background:#1c7c47; }
 #toast.t-error { background:#c0392b; }
 
-/* ===== OFFICE SCENE (ดีไซน์เดิม) ===== */
-.office { position:relative; height:460px; border-radius:16px; overflow:hidden; box-shadow:0 6px 24px rgba(0,0,0,.15); background:linear-gradient(#cfe3f5 0%, #cfe3f5 55%, #b98d5f 55%, #a87c50 100%); }
-.office .wallline { position:absolute; top:55%; left:0; right:0; height:6px; background:#8a6238; }
-.window { position:absolute; top:40px; width:130px; height:100px; background:linear-gradient(#9fd8ff,#d9f1ff); border:8px solid #fff; border-radius:6px; }
-.window::before { content:''; position:absolute; left:50%; top:0; bottom:0; width:5px; background:#fff; transform:translateX(-50%); }
-.window::after { content:'☁️'; position:absolute; left:8px; top:14px; font-size:22px; }
-.clock { position:absolute; top:36px; left:50%; transform:translateX(-50%); font-size:40px; }
-.banner { position:absolute; top:96px; left:50%; transform:translateX(-50%); background:#fff; padding:5px 18px; border-radius:16px; font-size:13px; font-weight:bold; color:#1e3a5f; box-shadow:0 2px 6px rgba(0,0,0,.12); }
-.desk { position:absolute; width:110px; z-index:2; text-align:center; }
-.desk .monitor { width:44px; height:30px; background:#2b3947; border-radius:4px; margin:0 auto; position:relative; }
-.desk .monitor::after { content:''; position:absolute; inset:4px; background:linear-gradient(135deg,#5fd0f2,#3f7fd9); border-radius:2px; }
-.desk .table { width:100%; height:12px; background:#7a4f28; border-radius:3px; margin-top:2px; box-shadow:0 3px 0 #5e3c1d; }
-.plant { position:absolute; font-size:40px; z-index:2; }
-.char { position:absolute; width:56px; cursor:pointer; z-index:5; transition:left linear; text-align:center; }
-.char .nametag { background:rgba(30,58,95,.85); color:#fff; font-size:11px; padding:2px 8px; border-radius:10px; display:inline-block; margin-bottom:2px; white-space:nowrap; }
-.char .bubble { position:absolute; top:-26px; left:50%; transform:translateX(-50%); background:#fff; border-radius:10px; padding:2px 8px; font-size:11px; box-shadow:0 2px 5px rgba(0,0,0,.2); opacity:0; transition:.3s; white-space:nowrap; }
+/* ===== RMA PIXEL OFFICE (ดีไซน์ใหม่จาก Reference — เฉพาะหน้านี้) ===== */
+.office { position:relative; height:480px; border-radius:16px; overflow:hidden; box-shadow:0 6px 24px rgba(0,0,0,.3); background:#242936; image-rendering:pixelated; }
+.px-ceiling { position:absolute; top:0; left:0; right:0; height:8%; background:#151821; border-bottom:3px solid #0e1118; z-index:1; }
+.px-lamp { position:absolute; top:7.2%; width:34px; height:7px; background:#ffd98a; border-radius:2px; z-index:2;
+  box-shadow:0 3px 0 #b98d3c, 0 26px 46px 18px rgba(255,215,140,.18); }
+.px-wall { position:absolute; top:8%; left:0; width:100%; height:49%; background:linear-gradient(#9aa5bd,#8d99b3); }
+.px-walltrim { position:absolute; top:56.4%; left:0; right:0; height:5px; background:#5d4126; z-index:2; }
+.px-floor { position:absolute; top:57%; left:0; right:0; bottom:0;
+  background:repeating-linear-gradient(180deg,#a8743f 0 14px,#9c6a39 14px 28px),
+             repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 2px,transparent 2px 96px);
+  background-blend-mode:multiply; }
+
+/* โลโก้บนผนัง */
+.px-logo { position:absolute; top:13%; left:6%; z-index:2; line-height:1; }
+.px-logo-rma { font-family:'Courier New',monospace; font-weight:900; font-size:34px; color:#e8edf6; letter-spacing:2px; text-shadow:2px 2px 0 #565f75; }
+.px-logo-dot { color:#e0641f; }
+.px-logo-sub { display:block; font-family:'Courier New',monospace; font-weight:700; font-size:11px; color:#dfe5f0; letter-spacing:4px; margin-top:3px; text-shadow:1px 1px 0 #565f75; }
+
+/* หน้าต่างวิวเมืองกลางคืน */
+.px-window { position:absolute; top:11%; width:9.5%; height:24%; border:5px solid #e8edf6; background:#101a30; z-index:2; box-shadow:2px 2px 0 rgba(0,0,0,.15); }
+.px-sky { position:absolute; inset:0; background:linear-gradient(#0f1b38 55%, #1a2c52); }
+.px-city { position:absolute; left:0; right:0; bottom:0; height:55%;
+  background:repeating-linear-gradient(90deg,#26385f 0 9px,#1c2c4e 9px 15px,#31456f 15px 21px,#1c2c4e 21px 26px);
+  box-shadow:inset 0 4px 0 rgba(255,220,130,.12); }
+.px-window::after { content:''; position:absolute; left:50%; top:0; bottom:0; width:4px; background:#e8edf6; transform:translateX(-50%); }
+
+/* บอร์ด TODAY'S MISSION (ตัวเลขจริงจากระบบ) */
+.px-board { position:absolute; top:11%; left:24%; width:15.5%; min-width:150px; background:#f4f7fb; border:4px solid #7f8aa1; border-radius:4px; padding:7px 9px; z-index:3; box-shadow:3px 3px 0 rgba(0,0,0,.18); }
+.px-board-title { font-family:'Courier New',monospace; font-weight:900; font-size:11px; color:#1e2635; text-align:center; border-bottom:2px solid #cfd8e6; padding-bottom:4px; margin-bottom:5px; letter-spacing:1px; }
+.px-board-row { display:flex; align-items:center; gap:6px; font-size:11px; color:#333e52; padding:2.5px 0; }
+.px-board-row b { margin-left:auto; color:#1e2635; }
+.px-board-row .dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+.px-alert { color:#d24545; font-weight:900; animation:pulse 1.2s infinite; }
+.px-clock { position:absolute; top:10.5%; left:41.5%; font-size:26px; z-index:2; }
+.px-shelf { position:absolute; top:24%; left:42%; background:#7a5330; padding:1px 8px 0; font-size:13px; z-index:2; box-shadow:0 4px 0 #5d4126; }
+
+/* เฟอร์นิเจอร์ pixel */
+.px-vend { position:absolute; top:26%; left:15.5%; width:5%; min-width:44px; height:30.5%; background:#22262f; border:3px solid #141720; z-index:3; }
+.px-vend-glass { position:absolute; inset:5px 5px 30% 5px; background:#101d33;
+  background-image:radial-gradient(circle at 6px 8px,#e06430 2.5px,transparent 3px),radial-gradient(circle at 18px 8px,#3f7fd9 2.5px,transparent 3px),radial-gradient(circle at 30px 8px,#e5a93d 2.5px,transparent 3px),radial-gradient(circle at 6px 22px,#3fae62 2.5px,transparent 3px),radial-gradient(circle at 18px 22px,#c9ced6 2.5px,transparent 3px),radial-gradient(circle at 30px 22px,#e06430 2.5px,transparent 3px),radial-gradient(circle at 6px 36px,#3f7fd9 2.5px,transparent 3px),radial-gradient(circle at 18px 36px,#e5a93d 2.5px,transparent 3px); }
+.px-vend-slot { position:absolute; left:5px; right:5px; bottom:8px; height:12%; background:#0c0f16; }
+.px-cooler { position:absolute; top:38%; left:21.3%; width:2%; min-width:17px; height:18.5%; background:#2b303c; border:2px solid #171b24; z-index:3; }
+.px-cooler::before { content:''; position:absolute; top:-9px; left:50%; transform:translateX(-50%); width:12px; height:11px; background:#7fb4e8; border-radius:2px; }
+.px-sofa { position:absolute; top:44%; left:3%; width:9.5%; min-width:86px; height:12%; z-index:3; }
+.px-sofa-back { position:absolute; left:6%; right:6%; top:0; height:52%; background:#2e4f8f; border-radius:3px 3px 0 0; box-shadow:inset 0 -3px 0 #24407a; }
+.px-sofa-seat { position:absolute; left:0; right:0; bottom:0; height:55%; background:#39599c; border-radius:3px; box-shadow:inset 0 4px 0 #2e4f8f, 0 4px 0 #1d3059; }
+.px-sofa-arm { position:absolute; bottom:0; width:12%; height:78%; background:#2e4f8f; border-radius:3px; }
+.px-sofa-arm.l { left:-2%; } .px-sofa-arm.r { right:-2%; }
+.px-coffee-table { position:absolute; top:51.5%; left:6.5%; width:5.5%; min-width:48px; height:4.5%; background:#7a5330; border-radius:2px; box-shadow:0 5px 0 #5d4126, inset 0 2px 0 #8d6238; z-index:3; }
+.px-desk { position:absolute; top:44.5%; width:7.5%; min-width:64px; height:12%; z-index:3; }
+.px-laptop { position:absolute; left:50%; transform:translateX(-50%); top:-26%; width:34px; height:24px; background:#1a1e27; border-radius:2px; }
+.px-laptop::after { content:'RMA'; position:absolute; inset:3px; background:#2455a4; color:#cfe0ff; font-size:7px; font-weight:bold; display:flex; align-items:center; justify-content:center; font-family:monospace; letter-spacing:1px; }
+.px-desk-top { position:absolute; top:0; left:0; right:0; height:26%; background:#7a5330; box-shadow:inset 0 2px 0 #8d6238; }
+.px-desk-base { position:absolute; top:26%; left:6%; right:6%; bottom:0; background:#23262e; box-shadow:inset 0 -4px 0 #16181e; }
+.px-plant { position:absolute; font-size:34px; z-index:3; }
+
+/* โซนโชว์รูม (ขวา) */
+.px-garage { position:absolute; top:8%; right:0; width:47%; height:49%; background:linear-gradient(#2a3040,#242a39); border-left:5px solid #1a1f2b; }
+.px-neon { position:absolute; top:10.5%; right:16%; background:#160f06; border:3px solid #6b4715; border-radius:4px; padding:4px 16px; z-index:3;
+  font-family:'Courier New',monospace; font-weight:900; font-size:16px; letter-spacing:2px; color:#ffb63d;
+  text-shadow:0 0 6px #ff9d1c, 0 0 16px rgba(255,157,28,.6); animation:neonFlicker 3.2s infinite; }
+@keyframes neonFlicker { 0%,93%,97%,100% { opacity:1; } 94.5% { opacity:.55; } 96% { opacity:.85; } }
+.px-brandsigns { position:absolute; top:20%; right:1.5%; width:44%; display:flex; gap:2.5%; z-index:3; }
+.px-brandsign { flex:1; background:#12151d; border:2px solid #333c50; color:#e8edf6; text-align:center; padding:7px 2px; font-size:10px; font-weight:800; font-family:'Courier New',monospace; letter-spacing:.5px; overflow:hidden; white-space:nowrap; box-shadow:0 0 10px rgba(120,160,255,.08); }
+.px-carrow { position:absolute; top:36.5%; right:1.5%; width:44%; height:21%; display:flex; gap:2.5%; align-items:flex-end; z-index:3; }
+.px-bay { flex:1; position:relative; height:100%; display:flex; align-items:flex-end; justify-content:center;
+  border-left:2px dashed rgba(255,255,255,.16); }
+.px-bay:last-child { border-right:2px dashed rgba(255,255,255,.16); }
+.px-bay::before { content:''; position:absolute; top:-6px; left:20%; right:20%; height:5px; background:#ffe9b8; border-radius:2px; opacity:.5; }
+.px-car { position:relative; }
+.px-car .px { position:absolute; top:0; left:0; width:1px; height:1px; }
+
+/* ตัวละคร pixel (ผูกกับ Members — คลิกเปิดตารางงาน) */
+.char { position:absolute; width:44px; cursor:pointer; z-index:5; transition:left linear; text-align:center; }
+.char .nametag { background:rgba(16,22,34,.9); border:1px solid #3a465e; color:#fff; font-size:10.5px; padding:2px 8px; border-radius:3px; display:inline-block; margin-bottom:3px; white-space:nowrap; font-family:'Courier New',monospace; font-weight:700; }
+.char .bubble { position:absolute; top:-26px; left:50%; transform:translateX(-50%); background:#fff; border-radius:3px; padding:2px 8px; font-size:11px; box-shadow:2px 2px 0 rgba(0,0,0,.25); opacity:0; transition:.3s; white-space:nowrap; z-index:7; }
 .char.talk .bubble { opacity:1; }
-.body-wrap { position:relative; height:66px; }
-.char .head { width:26px; height:26px; border-radius:50%; background:#f7cfa8; margin:0 auto; position:relative; z-index:2; }
-.char .hair { position:absolute; top:-3px; left:-2px; right:-2px; height:14px; border-radius:14px 14px 4px 4px; }
-.char .face { position:absolute; top:12px; left:0; right:0; font-size:8px; letter-spacing:3px; text-align:center; }
-.char .torso { width:30px; height:24px; border-radius:8px 8px 4px 4px; margin:-2px auto 0; position:relative; z-index:1; }
-.char .legs { display:flex; justify-content:center; gap:4px; height:16px; }
-.char .leg { width:7px; height:15px; background:#33475e; border-radius:0 0 3px 3px; transform-origin:top center; }
-.char.walking .leg:nth-child(1){ animation:step .5s infinite alternate; }
-.char.walking .leg:nth-child(2){ animation:step .5s infinite alternate-reverse; }
-.char.walking .body-wrap { animation:bob .5s infinite alternate; }
-@keyframes step { from{transform:rotate(20deg)} to{transform:rotate(-20deg)} }
-@keyframes bob { from{transform:translateY(0)} to{transform:translateY(-3px)} }
-.char:hover .nametag { background:#4caf7d; }
-.char .badge { position:absolute; top:14px; right:2px; background:#e74c3c; color:#fff; font-size:10px; border-radius:50%; min-width:17px; height:17px; line-height:17px; z-index:6; }
+.char:hover .nametag { background:#e0641f; border-color:#e0641f; }
+.char .badge { position:absolute; top:16px; right:-2px; background:#e74c3c; color:#fff; font-size:10px; border-radius:50%; min-width:17px; height:17px; line-height:17px; z-index:8; border:2px solid #242936; }
+.body-wrap { position:relative; width:36px; height:63px; margin:0 auto; }
+.char.walking .body-wrap { animation:bob .46s infinite alternate; }
+@keyframes bob { from{transform:translateY(0)} to{transform:translateY(-2px)} }
 .flip .body-wrap { transform:scaleX(-1); }
+.flip.walking .body-wrap { animation:bobFlip .46s infinite alternate; }
+@keyframes bobFlip { from{transform:scaleX(-1) translateY(0)} to{transform:scaleX(-1) translateY(-2px)} }
+.pxf { position:absolute; inset:0; }
+.pxf .px { position:absolute; top:0; left:0; width:1px; height:1px; }
+.pxf.f2 { opacity:0; }
+.char.walking .pxf.f1 { animation:pxA .46s steps(1) infinite; }
+.char.walking .pxf.f2 { animation:pxB .46s steps(1) infinite; }
+@keyframes pxA { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
+@keyframes pxB { 0%,49% { opacity:0; } 50%,100% { opacity:1; } }
 .office-hint { text-align:center; color:#5a6b80; margin-top:12px; font-size:14px; }
 
-/* ===== CARDS / TABLES (ดีไซน์เดิม) ===== */
+/* ===== CARDS / TABLES ===== */
 .card { background:#fff; border-radius:12px; padding:16px; box-shadow:0 2px 10px rgba(0,0,0,.07); margin-bottom:16px; }
 .stats { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
 .stat { flex:1; min-width:120px; background:#fff; border-radius:12px; padding:13px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,.07); }
+.stat.clickable { cursor:pointer; transition:.15s; }
+.stat.clickable:hover { transform:translateY(-3px); box-shadow:0 4px 14px rgba(0,0,0,.13); }
 .stat .num { font-size:24px; font-weight:bold; color:#1e3a5f; }
 .stat .lbl { font-size:12px; color:#7a8aa0; }
 table { width:100%; border-collapse:collapse; font-size:12.5px; }
-th { background:#1e3a5f; color:#fff; padding:7px 6px; text-align:center; font-weight:600; white-space:nowrap; cursor:pointer; }
-th.sortable:hover { background:#2c5d9e; }
+th { background:#1e3a5f; color:#fff; padding:7px 6px; text-align:center; font-weight:600; white-space:nowrap; }
 td { padding:6px; border-bottom:1px solid #e6ecf3; text-align:center; vertical-align:middle; }
 tr:hover td { background:#f2f7fc; }
 .topic-cell { text-align:left; max-width:270px; }
+.topic-link { color:#1e3a5f; font-weight:600; cursor:pointer; }
+.topic-link:hover { color:#2c5d9e; text-decoration:underline; }
 .note-sub { display:block; font-size:11px; color:#8fa1b5; }
 .tag { padding:2px 9px; border-radius:12px; font-size:11px; font-weight:600; display:inline-block; }
 .kpi-pass { background:#d9f3e3; color:#1c7c47; }
@@ -90,6 +142,7 @@ tr:hover td { background:#f2f7fc; }
 .st-done { background:#d9f3e3; color:#1c7c47; }
 .st-doing { background:#e3edf9; color:#2c5d9e; }
 .st-wait { background:#fdf3d7; color:#a07b12; }
+.st-fix { background:#fde0e0; color:#c0392b; }
 .st-no { background:#eceff3; color:#5a6b80; }
 .type-tag { background:#e3edf9; color:#2c5d9e; }
 .urgent { background:#fde0e0; color:#c0392b; }
@@ -97,7 +150,7 @@ tr:hover td { background:#f2f7fc; }
 .due-yellow { background:#fdf3d7; color:#a07b12; }
 .due-red { background:#fde0e0; color:#c0392b; animation:pulse 1.4s infinite; }
 @keyframes pulse { 50% { opacity:.55; } }
-.del-btn, .edit-btn { border:none; background:none; cursor:pointer; font-size:14px; padding:2px 3px; }
+.del-btn, .edit-btn, .dup-btn { border:none; background:none; cursor:pointer; font-size:14px; padding:2px 3px; }
 .link-a { color:#2c5d9e; text-decoration:none; }
 .person-head { display:flex; align-items:center; gap:14px; margin-bottom:14px; flex-wrap:wrap; }
 .avatar { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:23px; color:#fff; font-weight:bold; }
@@ -106,12 +159,13 @@ tr:hover td { background:#f2f7fc; }
 .btn:hover { filter:brightness(1.08); }
 .btn.gray { background:#8395ab; }
 .btn.blue { background:#2c5d9e; }
+.btn.red { background:#c0392b; }
 .btn.small { padding:6px 12px; font-size:12px; }
 .toolbar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
 select, input[type=text], input[type=date], input[type=month], input[type=number], input[type=url], input[type=search] {
   padding:7px 9px; border:1px solid #cdd8e4; border-radius:8px; font-size:13px; background:#fff; }
 
-/* ===== SECTION HEADS (ดีไซน์เดิม) ===== */
+/* ===== SECTION HEADS ===== */
 .sec-block { margin-bottom:26px; }
 .sec-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 16px; border-radius:12px; color:#fff; margin-bottom:12px; box-shadow:0 2px 10px rgba(0,0,0,.1); }
 .sec-head h3 { font-size:15px; }
@@ -130,30 +184,33 @@ select, input[type=text], input[type=date], input[type=month], input[type=number
 .group-card.closed .group-body { display:none; }
 .group-body { padding:0 12px 12px; overflow-x:auto; }
 
-/* ===== CHIPS (สร้างจากชีต Brands อัตโนมัติ) ===== */
+/* ===== CHIPS ===== */
 .chips { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 .chip { border:2px solid #cdd8e4; background:#fff; color:#5a6b80; padding:6px 15px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:.15s; }
 .chip:hover { border-color:#4caf7d; }
 .chip.on { background:#1e3a5f; border-color:#1e3a5f; color:#fff; }
 .chip.add-chip { border-style:dashed; color:#4caf7d; border-color:#4caf7d; }
 
-/* ===== FILTER BAR (ค้นหาขั้นสูง) ===== */
+/* ===== FILTER BAR ===== */
 .filter-bar { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; }
 .filter-bar input[type=search] { grid-column:1/-1; }
 
 /* ===== DASHBOARD ===== */
-.dash-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
-.bar-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:12px; }
+.dash-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
+.bar-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:12px; cursor:pointer; }
+.bar-row:hover .bar-label { color:#1e3a5f; font-weight:600; }
 .bar-row .bar-label { width:110px; text-align:right; color:#5a6b80; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .bar-row .bar-track { flex:1; background:#eef2f7; border-radius:8px; height:20px; overflow:hidden; }
 .bar-row .bar-fill { height:100%; border-radius:8px; background:linear-gradient(90deg,#2c5d9e,#4caf7d); display:flex; align-items:center; justify-content:flex-end; padding-right:6px; color:#fff; font-size:11px; min-width:24px; transition:width .5s; }
+.dash-table td, .dash-table th { font-size:12px; }
+.pct-ring { font-size:34px; font-weight:bold; color:#1c7c47; }
 
-/* ===== IMAGES (เก็บบน Google Drive) ===== */
+/* ===== IMAGES ===== */
 .paste-zone { border:2px dashed #b7c6d6; border-radius:10px; padding:14px; text-align:center; color:#7a8aa0; font-size:13px; cursor:pointer; background:#f7fafc; }
 .paste-zone:hover, .paste-zone.drag { background:#e3f2ea; border-color:#4caf7d; color:#1c7c47; }
 .thumbs { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
 .thumb { position:relative; width:70px; height:70px; border-radius:8px; overflow:hidden; border:1px solid #dde6ef; background:#f2f7fc; }
-.thumb img { width:100%; height:100%; object-fit:cover; }
+.thumb img { width:100%; height:100%; object-fit:cover; cursor:zoom-in; }
 .thumb .rm { position:absolute; top:2px; right:2px; background:rgba(0,0,0,.55); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; line-height:1; }
 .mini-thumb { width:34px; height:34px; object-fit:cover; border-radius:6px; border:1px solid #dde6ef; cursor:zoom-in; vertical-align:middle; margin:1px; background:#f2f7fc; }
 .more-imgs { font-size:11px; color:#7a8aa0; }
@@ -161,30 +218,49 @@ select, input[type=text], input[type=date], input[type=month], input[type=number
 .lightbox.open { display:flex; }
 .lightbox img { max-width:92vw; max-height:92vh; border-radius:8px; }
 
+/* ===== ไฟล์แนบ ===== */
+.file-list { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+.file-item { display:flex; gap:8px; align-items:center; background:#f7fafc; border:1px solid #e6ecf3; padding:7px 10px; border-radius:8px; font-size:12.5px; }
+.file-item .f-name { flex:1; color:#1e3a5f; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.file-item .f-meta { color:#8fa1b5; font-size:11px; white-space:nowrap; }
+.file-item a { text-decoration:none; }
+
 /* ===== LINKS หลายช่องทาง ===== */
 .link-rows { display:flex; flex-direction:column; gap:6px; }
 .link-row { display:grid; grid-template-columns:110px 1fr 70px 70px 30px; gap:6px; align-items:center; }
 .link-row input, .link-row select { width:100%; }
 .channel-tag { font-size:10px; padding:1px 6px; border-radius:8px; background:#e3edf9; color:#2c5d9e; margin:1px; display:inline-block; }
 
-/* ===== MODAL (ดีไซน์เดิม) ===== */
+/* ===== MODAL ===== */
 .modal-bg { display:none; position:fixed; inset:0; background:rgba(20,30,45,.55); z-index:100; align-items:center; justify-content:center; padding:16px; }
 .modal-bg.open { display:flex; }
 .modal { background:#fff; border-radius:14px; padding:20px; width:100%; max-width:560px; max-height:92vh; overflow:auto; }
-.modal h3 { color:#1e3a5f; margin-bottom:13px; }
+.modal h3 { color:#1e3a5f; }
+.modal-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.task-id-line { font-size:11px; color:#8fa1b5; margin-bottom:10px; }
+.autosave-chip { margin-left:auto; font-size:11px; padding:3px 10px; border-radius:12px; }
+.autosave-chip.saving { background:#fdf3d7; color:#a07b12; }
+.autosave-chip.saved { background:#d9f3e3; color:#1c7c47; }
+.autosave-chip.error { background:#fde0e0; color:#c0392b; }
 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
 .form-grid .full { grid-column:1/-1; }
 .form-grid label { font-size:12px; color:#5a6b80; display:block; margin-bottom:3px; }
 .form-grid input, .form-grid select { width:100%; }
-.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; }
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap; }
 .dd-manage { display:flex; gap:6px; align-items:center; }
 .dd-manage select { flex:1; }
 .dd-add { background:none; border:1px dashed #4caf7d; color:#4caf7d; border-radius:8px; padding:6px 8px; cursor:pointer; font-size:12px; white-space:nowrap; }
 
-/* ===== ADMIN LISTS ===== */
-.admin-list { display:flex; flex-direction:column; gap:6px; max-height:300px; overflow:auto; }
-.admin-item { display:flex; gap:8px; align-items:center; background:#f7fafc; padding:7px 10px; border-radius:8px; font-size:13px; }
-.admin-item .grow { flex:1; }
+/* ===== MANAGE / TRASH / VERSION lists ===== */
+.admin-list { display:flex; flex-direction:column; gap:6px; max-height:340px; overflow:auto; }
+.admin-item { display:flex; gap:8px; align-items:center; background:#f7fafc; padding:7px 10px; border-radius:8px; font-size:13px; flex-wrap:wrap; }
+.admin-item .grow { flex:1; min-width:160px; }
+.trash-entity { font-size:10px; background:#e3edf9; color:#2c5d9e; padding:1px 8px; border-radius:8px; }
+
+/* ===== DETAIL VIEW ===== */
+.v-row { display:flex; gap:10px; padding:6px 0; border-bottom:1px solid #f0f4f8; font-size:13px; }
+.v-row .v-label { width:120px; color:#7a8aa0; flex-shrink:0; }
+.v-row .v-val { flex:1; color:#22303f; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width:900px) {
@@ -198,5 +274,5 @@ select, input[type=text], input[type=date], input[type=month], input[type=number
   th, td { font-size:11px; padding:5px 3px; }
   .office { height:360px; }
   .stat { min-width:100px; }
-  .user-chip span.uname { display:none; }
+  .who-box span { display:none; }
 }
